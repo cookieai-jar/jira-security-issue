@@ -257,6 +257,7 @@ class JiraSecurityIssue
             $addedWatchers[] = $account;
         }
 
+        /*
         $commentText = $addedWatchers ?
             \sprintf(self::WATCHERS_TEXT, $this->formatUsers($addedWatchers)) :
             self::NO_WATCHERS_TEXT;
@@ -268,6 +269,7 @@ class JiraSecurityIssue
         $comment = $this->createComment($commentText);
 
         $this->issueService->addComment($ret->key, $comment);
+        */
 
         return $ret->key;
     }
