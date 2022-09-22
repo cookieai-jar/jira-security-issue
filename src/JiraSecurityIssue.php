@@ -85,6 +85,13 @@ class JiraSecurityIssue
      */
     protected $keyLabels = [];
 
+    /**
+     * Issue component names.
+     *
+     * @var array<string>
+     */
+    protected $components = [];
+
     public function __construct()
     {
         $this->project = \getenv('JIRA_PROJECT') ?: '';
@@ -95,6 +102,11 @@ class JiraSecurityIssue
 
         if ($watchers) {
             $this->watchers = \explode(',', $watchers);
+        }
+
+        $components = \getenv('JIRA_COMPONENTS');
+        if ($components) {
+            $this->components = \explode(',', $components);
         }
 
         $conf = [
@@ -191,6 +203,13 @@ class JiraSecurityIssue
         return $this;
     }
 
+    public function setComponent(string $string): JiraSecurityIssue
+    {
+        $this->components[] = $string;
+
+        return $this;
+    }
+
     /**
      * Ensure that the issue exists.
      *
@@ -208,7 +227,8 @@ class JiraSecurityIssue
         $issueField->setProjectKey($this->project)
             ->setSummary($this->title)
             ->setIssueType($this->issueType)
-            ->setDescription($this->body);
+            ->setDescription($this->body)
+            ->addComponents($this->components);
 
         foreach ($this->keyLabels as $label) {
             $issueField->addLabel($label);
