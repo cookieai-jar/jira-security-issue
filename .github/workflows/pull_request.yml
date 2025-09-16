@@ -9,7 +9,7 @@ permissions:
 jobs:
   php-versions:
     name: Lookup PHP versions
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.versions.outputs.matrix }}
     steps:
@@ -19,7 +19,7 @@ jobs:
 
   test:
     name: PHPUnit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: php-versions
     strategy:
       matrix:
@@ -40,7 +40,7 @@ jobs:
 
   review_codestyle:
     name: Codestyle
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: php-versions
     strategy:
       matrix:
@@ -66,7 +66,7 @@ jobs:
 
   static_code_analysis:
     name: Static Code Analysis
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: php-versions
     strategy:
       matrix:
