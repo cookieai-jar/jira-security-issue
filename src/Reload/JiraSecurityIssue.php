@@ -20,9 +20,9 @@ use Throwable;
 // phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal
 class JiraSecurityIssue
 {
-    public const WATCHERS_TEXT = "This issue is being followed by %s";
-    public const NO_WATCHERS_TEXT = "No watchers on this issue, remember to notify relevant people.";
-    public const NOT_FOUND_WATCHERS_TEXT = "Could not find user for %s, " .
+    public const string WATCHERS_TEXT = "This issue is being followed by %s";
+    public const string NO_WATCHERS_TEXT = "No watchers on this issue, remember to notify relevant people.";
+    public const string NOT_FOUND_WATCHERS_TEXT = "Could not find user for %s, " .
                                          "please check the users listed in JIRA_WATCHERS.";
 
     /**

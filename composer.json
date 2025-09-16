@@ -9,12 +9,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Reload\\": "src/"
+            "Reload\\": "src/Reload/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Reload\\": "tests/"
+            "Reload\\": "tests/Reload/"
         }
     },
     "require-dev": {
