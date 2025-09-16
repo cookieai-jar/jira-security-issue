@@ -7,8 +7,8 @@ namespace Reload;
 use JiraRestApi\Configuration\ArrayConfiguration;
 use JiraRestApi\Issue\Comment;
 use JiraRestApi\Issue\Issue;
+use JiraRestApi\Issue\IssueBulkResult;
 use JiraRestApi\Issue\IssueField;
-use JiraRestApi\Issue\IssueSearchResult;
 use JiraRestApi\Issue\IssueService;
 use JiraRestApi\Issue\Visibility;
 use JiraRestApi\JiraException;
@@ -273,10 +273,12 @@ class JiraSecurityIssue
         $jql .= "ORDER BY created DESC";
 
         $result = $this->issueService->search($jql);
-        \assert($result instanceof IssueSearchResult);
+        \assert($result instanceof IssueBulkResult);
 
-        if (($result->total > 0)) {
-            $issue = \reset($result->issues);
+        $issues = $result->getIssues();
+
+        if (\count($issues) > 0) {
+            $issue = \reset($issues);
 
             return $issue ? $issue->key : null;
         }
