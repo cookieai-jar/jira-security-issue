@@ -2,14 +2,16 @@
 <ruleset>
     <file>./src</file>
     <file>./tests</file>
-    <rule ref="AppocularCodingStandard"/>
+    <rule ref="AppocularCodingStandard">
+      <exclude name="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat"/>
+    </rule>
     <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
       <properties>
         <!-- Tell Slevomat the root directories of our namespaces, so
              it can check if the filepath is correct. -->
 	<property name="rootNamespaces" type="array">
-	  <element key="src" value="Reload"/>
-	  <element key="tests" value="Reload"/>
+	  <element key="src/Reload" value="Reload"/>
+	  <element key="tests/Reload" value="Reload"/>
 	</property>
       </properties>
     </rule>

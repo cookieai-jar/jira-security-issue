@@ -3,18 +3,19 @@
     "description": "Create Jira issues if it doesn't exist",
     "license": "MIT",
     "require": {
-        "php": ">=8.2.0",
-        "lesstif/php-jira-rest-client": "^5",
-        "webignition/symfony-console-typed-input": "^0.6"
+        "php": ">=8.3.0",
+        "lesstif/php-jira-rest-client": "dev-main",
+        "webignition/symfony-console-typed-input": "^0.6",
+        "cweagans/composer-patches": "^1.7"
     },
     "autoload": {
         "psr-4": {
-            "Reload\\": "src/"
+            "Reload\\": "src/Reload/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Reload\\": "tests/"
+            "Reload\\": "tests/Reload/"
         }
     },
     "require-dev": {
@@ -28,11 +29,20 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.3"
     },
+    "extra": {
+        "composer-exit-on-patch-failure": true,
+        "patches": {
+            "lesstif/php-jira-rest-client": {
+                "#554: fix deprecated search to search/jql": "https://github.com/lesstif/php-jira-rest-client/pull/554/commits/0823afc040b752007cb2217a722bf3f4d4fccc5d.patch"
+            }
+        }
+    },
     "config": {
         "lock": false,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "cweagans/composer-patches": true
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Reload;
 use JiraRestApi\Configuration\ArrayConfiguration;
 use JiraRestApi\Issue\Comment;
 use JiraRestApi\Issue\Issue;
+use JiraRestApi\Issue\IssueBulkResult;
 use JiraRestApi\Issue\IssueField;
-use JiraRestApi\Issue\IssueSearchResult;
 use JiraRestApi\Issue\IssueService;
 use JiraRestApi\Issue\Visibility;
 use JiraRestApi\JiraException;
@@ -20,9 +20,9 @@ use Throwable;
 // phpcs:ignore SlevomatCodingStandard.Classes.RequireAbstractOrFinal
 class JiraSecurityIssue
 {
-    public const WATCHERS_TEXT = "This issue is being followed by %s";
-    public const NO_WATCHERS_TEXT = "No watchers on this issue, remember to notify relevant people.";
-    public const NOT_FOUND_WATCHERS_TEXT = "Could not find user for %s, " .
+    public const string WATCHERS_TEXT = "This issue is being followed by %s";
+    public const string NO_WATCHERS_TEXT = "No watchers on this issue, remember to notify relevant people.";
+    public const string NOT_FOUND_WATCHERS_TEXT = "Could not find user for %s, " .
                                          "please check the users listed in JIRA_WATCHERS.";
 
     /**
@@ -273,10 +273,12 @@ class JiraSecurityIssue
         $jql .= "ORDER BY created DESC";
 
         $result = $this->issueService->search($jql);
-        \assert($result instanceof IssueSearchResult);
+        \assert($result instanceof IssueBulkResult);
 
-        if (($result->total > 0)) {
-            $issue = \reset($result->issues);
+        $issues = $result->getIssues();
+
+        if (\count($issues) > 0) {
+            $issue = \reset($issues);
 
             return $issue ? $issue->key : null;
         }
