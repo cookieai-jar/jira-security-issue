@@ -6,8 +6,6 @@ namespace Reload;
 
 use JiraRestApi\Configuration\ArrayConfiguration;
 use JiraRestApi\Issue\Comment;
-use JiraRestApi\Issue\Issue;
-use JiraRestApi\Issue\IssueBulkResult;
 use JiraRestApi\Issue\IssueField;
 use JiraRestApi\Issue\IssueService;
 use JiraRestApi\Issue\Visibility;
@@ -201,9 +199,9 @@ class JiraSecurityIssue
 
         $issueField = new IssueField();
         $issueField->setProjectKey($this->project)
-            ->setSummary($this->title ?? '')
             ->setIssueTypeAsString($this->issueType)
-            ->setDescription($this->body);
+            ->setDescription($this->body)
+            ->setSummary($this->title ?? '');
 
         if (\is_string($this->priority)) {
             $issueField->setPriorityNameAsString($this->priority);
@@ -215,7 +213,6 @@ class JiraSecurityIssue
 
         try {
             $ret = $this->issueService->create($issueField);
-            \assert($ret instanceof Issue);
         } catch (Throwable $t) {
             throw new RuntimeException("Could not create issue: {$t->getMessage()}");
         }
@@ -273,7 +270,6 @@ class JiraSecurityIssue
         $jql .= "ORDER BY created DESC";
 
         $result = $this->issueService->search($jql);
-        \assert($result instanceof IssueBulkResult);
 
         $issues = $result->getIssues();
 
@@ -296,10 +292,6 @@ class JiraSecurityIssue
             ];
 
             $users = $this->userService->findAssignableUsers($paramArray);
-
-            if (!\is_array($users)) {
-                return null;
-            }
 
             $user = \array_pop($users);
 

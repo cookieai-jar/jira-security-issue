@@ -7,6 +7,7 @@ namespace Reload;
 use JiraRestApi\Issue\Comment;
 use JiraRestApi\Issue\Issue;
 use JiraRestApi\Issue\IssueBulkResult;
+use JiraRestApi\Issue\IssueField;
 use JiraRestApi\Issue\IssueService;
 use JiraRestApi\User\User;
 use JiraRestApi\User\UserService;
@@ -58,6 +59,7 @@ final class JiraSecurityIssueTest extends TestCase
             ->create(Argument::any())
             // phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
             ->will(static function ($args) use (&$issueField) {
+                \assert(\is_array($args));
                 $issueField = $args[0];
 
                 $issue = new Issue();
@@ -75,6 +77,7 @@ final class JiraSecurityIssueTest extends TestCase
             ->setBody('Lala')
             ->ensure();
 
+        $this->assertInstanceOf(IssueField::class, $issueField);
         $this->assertEquals('ABC', $issueField->getProjectKey());
         $this->assertEquals('Mytype', $issueField->getIssueType()->name);
         $this->assertEquals('The title', $issueField->summary);
