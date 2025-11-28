@@ -6,8 +6,8 @@ namespace Reload;
 
 use JiraRestApi\Issue\Comment;
 use JiraRestApi\Issue\Issue;
-use JiraRestApi\Issue\IssueBulkResult;
 use JiraRestApi\Issue\IssueField;
+use JiraRestApi\Issue\IssueSearchResult;
 use JiraRestApi\Issue\IssueService;
 use JiraRestApi\User\User;
 use JiraRestApi\User\UserService;
@@ -119,7 +119,7 @@ final class JiraSecurityIssueTest extends TestCase
         $this->issueService
             ->search(Argument::any())
             ->will(static function () {
-                $searchResult = new IssueBulkResult();
+                $searchResult = new IssueSearchResult();
                 $searchResult->issues = [];
 
                 return $searchResult;
@@ -139,7 +139,7 @@ final class JiraSecurityIssueTest extends TestCase
                 $issue = new Issue();
                 $issue->key = 'ABC-14';
 
-                $searchResult = new IssueBulkResult();
+                $searchResult = new IssueSearchResult();
                 $searchResult->issues = [$issue];
 
                 return $searchResult;
