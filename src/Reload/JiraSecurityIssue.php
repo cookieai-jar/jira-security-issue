@@ -257,17 +257,19 @@ class JiraSecurityIssue
             $addedWatchers[] = $account;
         }
 
-        $commentText = $addedWatchers
-            ? \sprintf(self::WATCHERS_TEXT, $this->formatUsers($addedWatchers))
-            : self::NO_WATCHERS_TEXT;
+        if ($addedWatchers || $notFoundWatchers) {
+            $commentText = $addedWatchers
+                ? \sprintf(self::WATCHERS_TEXT, $this->formatUsers($addedWatchers))
+                : self::NO_WATCHERS_TEXT;
 
-        if ($notFoundWatchers) {
-            $commentText .= "\n\n" . \sprintf(self::NOT_FOUND_WATCHERS_TEXT, $this->formatQuoted($notFoundWatchers));
+            if ($notFoundWatchers) {
+                $commentText .= "\n\n" . \sprintf(self::NOT_FOUND_WATCHERS_TEXT, $this->formatQuoted($notFoundWatchers));
+            }
+
+            $comment = $this->createComment($commentText);
+
+            $this->issueService->addComment($ret->key, $comment);
         }
-
-        $comment = $this->createComment($commentText);
-
-        $this->issueService->addComment($ret->key, $comment);
 
         return $ret->key;
     }
