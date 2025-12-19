@@ -61,6 +61,13 @@ class JiraSecurityIssue
     protected array $watchers = [];
 
     /**
+     * Components for the issue.
+     *
+     * @var array<string>
+     */
+    protected array $components = [];
+
+    /**
      * Issue title.
      */
     protected ?string $title = null;
@@ -88,6 +95,12 @@ class JiraSecurityIssue
 
         if ($watchers) {
             $this->watchers = \array_filter(\explode(',', \trim($watchers)));
+        }
+
+        $components = \getenv('JIRA_COMPONENTS');
+
+        if ($components) {
+            $this->components = \array_filter(\explode(',', \trim($components)));
         }
 
         $conf = [
@@ -177,6 +190,13 @@ class JiraSecurityIssue
         return $this;
     }
 
+    public function setComponent(string $component): self
+    {
+        $this->components[] = $component;
+
+        return $this;
+    }
+
     public function setBody(string $body): self
     {
         $this->body = $body;
@@ -209,6 +229,10 @@ class JiraSecurityIssue
 
         foreach ($this->keyLabels as $label) {
             $issueField->addLabelAsString($label);
+        }
+
+        foreach ($this->components as $component) {
+            $issueField->addComponentAsString($component);
         }
 
         try {
